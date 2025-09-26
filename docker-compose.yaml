@@ -1,0 +1,27 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  solidstart-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      # Map the application port
+      - "3000:3000"
+      # Map the HMR port
+      - "3001:3001"
+    develop:
+      watch:
+        # Action: sync your code from the host to the container
+        - action: sync
+          path: .
+          target: /app
+          # Ignore unnecessary files like node_modules
+          ignore:
+            - node_modules
+            - .git
+            - dist
+            - .solid
+    # Command to run the dev server
+    command: ["pnpm", "run", "dev"]
