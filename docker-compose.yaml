@@ -8,6 +8,9 @@ services:
       - "3000:3000"
       # Map the HMR port
       - "3001:3001"
+    environment:
+      - POSTGRES_URL=postgres://user:password@postgres:5432/mydb
+      - PAYLOAD_SECRET=supersecret
     develop:
       watch:
         - action: rebuild

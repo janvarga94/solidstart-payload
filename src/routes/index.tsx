@@ -1,12 +1,23 @@
 import { Title } from "@solidjs/meta";
 import Counter from "~/components/Counter";
+import { getPayload } from "payload";
+import config from "../../payload.config";
+import { createAsync } from "@solidjs/router";
+
+const getData = async () => {
+    "use server";
+    const payloadConfig = await config;
+    const payload = await getPayload({ config: payloadConfig });
+    return 3;
+};
 
 export default function Home() {
+    let asyncstuff = createAsync(getData);
     return (
         <main>
             <Title>Hello World</Title>
-            <h1>Hello world! 1Jan</h1>
             <Counter />
+            <h1>Hello world! 1Jan {asyncstuff()}</h1>
             <p>
                 Visit{" "}
                 <a href="https://start.solidjs.com" target="_blank">

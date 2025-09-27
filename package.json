@@ -8,9 +8,14 @@
     "version": "vinxi version"
   },
   "dependencies": {
-    "@solidjs/meta": "^0.29.4", 
+    "@payloadcms/db-postgres": "^3.57.0", 
+    "@payloadcms/richtext-lexical": "^3.57.0",
+    "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.1.0",
+    "payload": "^3.57.0",
+    "pg": "^8.16.3",
+    "sharp": "^0.34.4",
     "solid-js": "^1.9.5",
     "vinxi": "^0.5.7"
   },
