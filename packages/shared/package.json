@@ -1,0 +1,26 @@
+{
+  "name": "@shared-models",
+  "version": "1.0.0",
+  "description": "Shared code for the monorepo",
+  "type": "module",
+  "scripts": {
+    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=./payload.config.ts payload generate:types"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "types": "./index.ts",
+      "default": "./index.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/react": "19.0.1",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "payload": "^3.57.0",
+    "@payloadcms/db-postgres": "^3.57.0",
+    "@payloadcms/richtext-lexical": "^3.57.0",
+    "sharp": "^0.34.4"
+  }
+}

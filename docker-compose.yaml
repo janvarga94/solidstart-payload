@@ -1,34 +1,50 @@
 services:
-  solidstart-app:
+  admin:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      target: admin_dev # Reference the specific build target
     ports:
-      # Map the application port
-      - "3000:3000"
-      # Map the HMR port
-      - "3001:3001"
+      - "2999:3000"
     environment:
-      - POSTGRES_URL=postgres://user:password@postgres:5432/mydb
-      - PAYLOAD_SECRET=supersecret
+      PAYLOAD_SECRET: supersecret
+      POSTGRES_URL: postgres://user:password@postgres:5432/mydb
     develop:
       watch:
-        - action: rebuild
-          path: ./package.json
-        - action: rebuild
-          path: ./pnpm-lock.yaml
-        # Action: sync your code from the host to the container
+        # Sync changes from the admin package
         - action: sync
-          path: .
-          target: /app
-          # Ignore unnecessary files like node_modules
+          path: ./packages/admin
+          target: /usr/src/app/packages/admin
           ignore:
             - node_modules
-            - .git
-            - dist
-            - .solid
-    # Command to run the dev server
-    command: ./entrypoint.sh
+        # Sync changes from the shared package
+        - action: sync
+          path: ./packages/common
+          target: /usr/src/app/packages/common
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: website_dev # Reference the specific build target
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    environment:
+      PAYLOAD_SECRET: supersecret
+      POSTGRES_URL: postgres://user:password@postgres:5432/mydb
+    develop:
+      watch:
+        # Sync changes from the website package
+        - action: sync
+          path: ./packages/website
+          target: /usr/src/app/packages/website
+          ignore:
+            - node_modules
+        # Sync changes from the shared package
+        - action: sync
+          path: ./packages/common
+          target: /usr/src/app/packages/common
+
   postgres:
     image: postgres:15
     environment:

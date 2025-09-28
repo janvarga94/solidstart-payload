@@ -1,8 +1,8 @@
 import { Title } from "@solidjs/meta";
 import Counter from "~/components/Counter";
 import { getPayload } from "payload";
-import config from "../../payload.config";
 import { createAsync } from "@solidjs/router";
+import { config } from "@shared-models";
 
 const getData = async () => {
     "use server";
