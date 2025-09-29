@@ -1,60 +1,60 @@
-import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import path from "path";
-import { buildConfig } from "payload";
-import { fileURLToPath } from "url";
-import sharp from "sharp";
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import path from 'path'
+import { buildConfig } from 'payload'
+import { fileURLToPath } from 'url'
+import sharp from 'sharp'
 
-import { Users } from "./collections/Users";
-import { Media } from "./collections/Media";
+import { Users } from './collections/Users'
+import { Media } from './collections/Media'
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export default buildConfig({
-    admin: {
-        user: Users.slug,
-        importMap: {
-            baseDir: path.resolve(dirname),
-        },
+  admin: {
+    user: Users.slug,
+    importMap: {
+      baseDir: path.resolve(dirname),
     },
-    collections: [
-        Users,
-        Media,
+  },
+  collections: [
+    Users,
+    Media,
+    {
+      slug: 'posts',
+      fields: [
         {
-            slug: "posts",
-            fields: [
-                {
-                    name: "title",
-                    label: "Title",
-                    type: "text",
-                    required: true,
-                },
-            ],
+          name: 'title',
+          label: 'Title',
+          type: 'text',
+          required: true,
         },
-    ],
-    editor: lexicalEditor(),
-    secret: process.env.PAYLOAD_SECRET || "",
-    typescript: {
-        outputFile: path.resolve(dirname, "payload-types.ts"),
+      ],
     },
-    async onInit(payload) {
-        const { totalDocs: postsCount } = await payload.count({
-            collection: "posts",
-        });
+  ],
+  editor: lexicalEditor(),
+  secret: process.env.PAYLOAD_SECRET || '',
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  async onInit(payload) {
+    const { totalDocs: postsCount } = await payload.count({
+      collection: 'posts',
+    })
 
-        if (!postsCount) {
-            await payload.create({
-                collection: "posts",
-                data: { title: "Post 1" },
-            });
-        }
+    if (!postsCount) {
+      await payload.create({
+        collection: 'posts',
+        data: { title: 'Post 1' },
+      })
+    }
+  },
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.POSTGRES_URL || '',
     },
-    db: postgresAdapter({
-        pool: {
-            connectionString: process.env.POSTGRES_URL || "",
-        },
-    }),
-    sharp,
-    plugins: [],
-});
+  }),
+  sharp,
+  plugins: [],
+})

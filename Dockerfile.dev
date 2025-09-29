@@ -2,6 +2,10 @@
 FROM node:22-slim AS dev_dependencies
 WORKDIR /usr/src/app
 
+
+RUN corepack enable
+RUN pnpm config set store-dir /root/.local/share/pnpm
+
 # Only copy workspace config and manifest files
 COPY pnpm-workspace.yaml ./
 COPY pnpm-lock.yaml ./
@@ -9,16 +13,15 @@ COPY package.json ./
 # Copy all package.json files from the subdirectories
 
 # Install all dependencies (this layer is only invalidated by manifest changes)
-RUN corepack enable
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile
+# RUN pnpm fetch --frozen-lockfile
+
 # Stage 2: Create a dev container for the `admin` app
 FROM dev_dependencies AS admin_dev
 WORKDIR /usr/src/app
 COPY . ./
 # next pnpm install is to generate node_modules for the admin package only
 # This is needed to create symlinks for local packages and to install peer dependencies and binaries
-RUN pnpm install --filter admin --prefer-offline
-ENTRYPOINT ["pnpm", "--filter", "admin", "run", "dev"]
+ENTRYPOINT pnpm --filter admin install --offline && pnpm --filter admin run dev
 
 
 # Stage 3: Create a dev container for the `website` app

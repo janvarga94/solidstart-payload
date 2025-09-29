@@ -9,6 +9,12 @@ services:
     environment:
       PAYLOAD_SECRET: supersecret
       POSTGRES_URL: postgres://user:password@postgres:5432/mydb
+    volumes:
+      - type: bind
+        # Use forward slashes and the /c/ drive mapping
+        source: /c/Users/Jan/AppData/Local/pnpm/store
+        target: /root/.local/share/pnpm
+    command: sleep infinity # Keep the container running for development
     develop:
       watch:
         # Sync changes from the admin package
