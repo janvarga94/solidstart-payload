@@ -7,11 +7,7 @@
     "generate:types": "cross-env PAYLOAD_CONFIG_PATH=./payload.config.ts payload generate:types"
   },
   "exports": {
-    ".": {
-      "import": "./index.ts",
-      "types": "./index.ts",
-      "default": "./index.ts"
-    }
+    ".": "./index.ts"
   },
   "devDependencies": {
     "@types/react": "19.0.1",
@@ -21,6 +17,6 @@
     "payload": "^3.57.0",
     "@payloadcms/db-postgres": "^3.57.0",
     "@payloadcms/richtext-lexical": "^3.57.0",
-    "sharp": "^0.34.4"
+    "sharp": "^0.33.5"
   }
 }

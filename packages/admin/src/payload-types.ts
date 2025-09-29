@@ -1,1 +1,1 @@
-export * from '@shared-models/payload-types'
+export * from '@shared-models'
