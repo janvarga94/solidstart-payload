@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.dev
       target: admin_dev # Reference the specific build target
     ports:
-      - "2999:3000"
+      - "3333:3000"
     environment:
       PAYLOAD_SECRET: supersecret
       POSTGRES_URL: postgres://user:password@postgres:5432/mydb
